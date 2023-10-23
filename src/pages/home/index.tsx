@@ -22,11 +22,13 @@ export function Home() {
   const { addItemCart } = useContext(CartContext);
 
   const [products, setProducts] = useState<ProductProps[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getProducts() {
       const response = await api.get("/products");
       setProducts(response.data);
+      setLoading(false);
     }
 
     getProducts();
@@ -41,6 +43,16 @@ export function Home() {
       },
     });
     addItemCart(product);
+  }
+
+  if (loading) {
+    return (
+      <div className="px-3">
+        <h4 className="text-center my-8 font-bold">
+          Carregando informações...
+        </h4>
+      </div>
+    );
   }
 
   return (

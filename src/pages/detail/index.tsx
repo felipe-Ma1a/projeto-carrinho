@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 
 export function ProductDetail() {
   const [product, setProduct] = useState<ProductProps>();
+  const [loading, setLoading] = useState(true);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ export function ProductDetail() {
       const response = await api.get(`/products/${id}`);
 
       setProduct(response.data);
+      setLoading(false);
     }
 
     getProduct();
@@ -40,6 +42,16 @@ export function ProductDetail() {
     });
     addItemCart(product);
     navigate("/cart");
+  }
+
+  if (loading) {
+    return (
+      <div className="px-3">
+        <h4 className="text-center my-8 font-bold">
+          Carregando informações...
+        </h4>
+      </div>
+    );
   }
 
   return (
